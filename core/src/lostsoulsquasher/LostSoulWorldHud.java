@@ -47,20 +47,22 @@ public class LostSoulWorldHud {
         gameHud.getBodyBehavior().setSize(root.getBodyBehavior().getSize().cpy());
         root.addChild(gameHud);
 
+        final float labelY = gameHud.getBodyBehavior().getSize().y - 2.0f;
+
         scoreLabel = new HudElementText(world.getGame());
         scoreLabel.setColor(textColor);
-        scoreLabel.getBodyBehavior().setPosition(new Vector2(0.0f, gameHud.getBodyBehavior().getSize().y));
+        scoreLabel.getBodyBehavior().setPosition(new Vector2(0.0f, labelY));
         gameHud.addChild(scoreLabel);
 
         lostSoulsLabel = new HudElementText(world.getGame());
         lostSoulsLabel.setColor(textColor);
-        lostSoulsLabel.getBodyBehavior().setPosition(new Vector2(200.0f, gameHud.getBodyBehavior().getSize().y));
+        lostSoulsLabel.getBodyBehavior().setPosition(new Vector2(200.0f, labelY));
         gameHud.addChild(lostSoulsLabel);
 
         difficultyLabel = new HudElementText(world.getGame());
         difficultyLabel.setText("Difficulty: 100%");
         difficultyLabel.setColor(textColor);
-        difficultyLabel.getBodyBehavior().setPosition(new Vector2(300.0f, gameHud.getBodyBehavior().getSize().y));
+        difficultyLabel.getBodyBehavior().setPosition(new Vector2(300.0f, labelY));
         gameHud.addChild(difficultyLabel);
 
         helpLabel = new HudElementText(world.getGame());
@@ -68,18 +70,20 @@ public class LostSoulWorldHud {
             helpLabel.setText("F - Fullscreen");
         }
         helpLabel.setColor(textColor);
-        helpLabel.getBodyBehavior().setPosition(new Vector2(300.0f + difficultyLabel.getBodyBehavior().getSize().x + 15.0f,
-                gameHud.getBodyBehavior().getSize().y));
+        helpLabel.getBodyBehavior().setPosition(new Vector2(300.0f + difficultyLabel.getBodyBehavior().getSize().x + 15.0f, labelY));
         gameHud.addChild(helpLabel);
 
         PrimitiveRectangleRenderBehavior gameHudRender = new PrimitiveRectangleRenderBehavior(gameHud);
         gameHudRender.color = new Color(0.0f, 0.0f, 0.0f, 0.4f);
         gameHud.setRenderBehavior(gameHudRender);
 
-        gameHud.getBodyBehavior().setPosition(new Vector2(0.0f, helpLabel.getBodyBehavior().getPosition().y - helpLabel.getBodyBehavior().getSize().y - 2.0f));
+        float backgroundY = helpLabel.getBodyBehavior().getPosition().y - helpLabel.getBodyBehavior().getSize().y - 2.0f;
+        float backgroundHeight = gameHud.getBodyBehavior().getSize().y - backgroundY;
+
+        gameHud.getBodyBehavior().setPosition(new Vector2(0.0f, backgroundY));
         Vector2 gameHudSize = Vector2.Zero.cpy();
         gameHudSize.x = helpLabel.getBodyBehavior().getPosition().x + helpLabel.getBodyBehavior().getSize().x + 5.0f;
-        gameHudSize.y = helpLabel.getBodyBehavior().getSize().y + 2.0f;
+        gameHudSize.y = backgroundHeight;
         gameHud.getBodyBehavior().setSize(gameHudSize);
     }
 

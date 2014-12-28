@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import lostsoulsquasher.audio.SoundDefinition;
 
 public class ContentLoader {
@@ -56,8 +57,7 @@ public class ContentLoader {
                 new Texture("MISLD0.png")
         };
 
-        font = new BitmapFont();
-        font.scale(0.2f);
+        loadFont();
 
         atomBoomSound = new SoundDefinition(loadSound("atomboom.wav"));
         explosionSound = new SoundDefinition(loadSound("DSBAREXP.wav"));
@@ -76,6 +76,19 @@ public class ContentLoader {
         bonusAtom = new Texture("bonus_atom.png");
         bonusBaby = new Texture("bonus_baby.png");
         bonusTurtle = new Texture("bonus_turtle.png");
+    }
+
+    private void loadFont() {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Miramo.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 22;
+        parameter.kerning = true;
+        parameter.genMipMaps = true;
+        parameter.magFilter = Texture.TextureFilter.Linear;
+        parameter.minFilter = Texture.TextureFilter.Linear;
+
+        font = generator.generateFont(parameter);
+        generator.dispose();
     }
 
     private Sound loadSound(String internal) {
