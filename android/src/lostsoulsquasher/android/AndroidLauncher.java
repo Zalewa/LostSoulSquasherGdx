@@ -19,6 +19,7 @@ public class AndroidLauncher extends AndroidApplication {
 		GameConfig config = new GameConfig();
 		config.setTouchScreen(true);
 		config.setFullscreenMakesSense(false);
+		config.setFontSize(32);
 		return config;
 	}
 }

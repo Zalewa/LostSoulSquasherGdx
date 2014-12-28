@@ -36,7 +36,7 @@ public class ContentLoader {
     public Texture bonusBaby;
     public Texture bonusTurtle;
 
-    public void loadContent() {
+    public void loadContent(GameConfig config) {
         backgrounds = new Texture[]{
                 new Texture("backgrounds/bg1.png"),
                 new Texture("backgrounds/bg2.png"),
@@ -57,7 +57,7 @@ public class ContentLoader {
                 new Texture("MISLD0.png")
         };
 
-        loadFont();
+        loadFont(config);
 
         atomBoomSound = new SoundDefinition(loadSound("atomboom.wav"));
         explosionSound = new SoundDefinition(loadSound("DSBAREXP.wav"));
@@ -78,10 +78,10 @@ public class ContentLoader {
         bonusTurtle = new Texture("bonus_turtle.png");
     }
 
-    private void loadFont() {
+    private void loadFont(GameConfig config) {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Miramo.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 22;
+        parameter.size = config.getFontSize();
         parameter.kerning = true;
         parameter.genMipMaps = true;
         parameter.magFilter = Texture.TextureFilter.Linear;

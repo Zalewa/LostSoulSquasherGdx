@@ -45,7 +45,7 @@ public class LostSoulGame extends ApplicationAdapter {
         audio.setPanClamp(0.9f);
 
         content = new ContentLoader();
-        content.loadContent();
+        content.loadContent(getConfig());
 
         LostSoulClasses.loadContent(this);
 
