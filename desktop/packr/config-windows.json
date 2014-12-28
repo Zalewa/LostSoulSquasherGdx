@@ -1,0 +1,18 @@
+{
+    "platform": "windows",
+    "jdk": "",
+    "executable": "LostSoulSquasher",
+    "appjar": "desktop-1.0.jar",
+    "mainclass": "lostsoulsquasher/desktop/DesktopLauncher",
+    "vmargs": [
+        "-Xmx1G"
+    ],
+    "resources": [
+        "CREDITS.txt",
+        "LICENSE.freedoom.txt",
+        "LICENSE.lostsoul.txt",
+        "README.md"
+    ],
+    "minimizejre": "hard",
+    "outdir": "out-windows"
+}

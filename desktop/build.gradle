@@ -1,5 +1,7 @@
 apply plugin: "java"
 
+import groovy.json.JsonSlurper
+
 sourceCompatibility = 1.6
 sourceSets.main.java.srcDirs = [ "src/" ]
 
@@ -23,6 +25,69 @@ task dist(type: Jar) {
     manifest {
         attributes 'Main-Class': project.mainClassName
     }
+}
+
+def copyToLib() {
+    copy {
+        into "$buildDir/libs"
+        from distfiles()
+    }
+}
+
+def packrConfigureWindows() {
+    def inputFile = file("packr/config-windows.json")
+    def json = new JsonSlurper().parseText(inputFile.text)
+    def props = localProperties()
+
+    json["jdk"] = props.getProperty("jdk.path")
+
+    def builder = new groovy.json.JsonBuilder()
+    builder.content = json
+    json = builder.toPrettyString()
+
+    def outputFile = file("$buildDir/libs/packr-config.json")
+    outputFile.withWriter{ out ->
+        out.write(json)
+    }
+}
+
+def packr() {
+    copy {
+        into "$buildDir/libs"
+        from file("packr/hard")
+    }
+    def props = localProperties()
+    def packr = props.getProperty("packr.path")
+    exec {
+        executable "java"
+        workingDir "$buildDir/libs"
+        args "-jar", "$packr", "packr-config.json"
+    }
+}
+
+task distexe() << {
+    copyToLib()
+    packrConfigureWindows()
+    packr()
+}
+
+distexe.dependsOn dist
+
+Properties localProperties() {
+    def props = new Properties()
+    file("local.properties").withInputStream {
+        stream -> props.load(stream)
+    }
+    return props
+}
+
+FileCollection distfiles() {
+    files([
+        "../CREDITS.txt",
+        "../LICENSE.freedoom.txt",
+        "../LICENSE.lostsoul.txt",
+        "../README.md"
+    ])
 }
 
 dist.dependsOn classes
