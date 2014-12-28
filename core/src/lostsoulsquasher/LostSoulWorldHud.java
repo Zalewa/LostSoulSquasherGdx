@@ -57,12 +57,14 @@ public class LostSoulWorldHud {
         lostSoulsLabel = new HudElementText(world.getGame());
         lostSoulsLabel.setColor(textColor);
         lostSoulsLabel.getBodyBehavior().setPosition(new Vector2(200.0f, labelY));
+        lostSoulsLabel.setText("Lives: 100");
         gameHud.addChild(lostSoulsLabel);
 
         difficultyLabel = new HudElementText(world.getGame());
         difficultyLabel.setText("Difficulty: 100%");
         difficultyLabel.setColor(textColor);
-        difficultyLabel.getBodyBehavior().setPosition(new Vector2(300.0f, labelY));
+        difficultyLabel.getBodyBehavior().setPosition(new Vector2(
+                lostSoulsLabel.getBodyBehavior().getPosition().x + lostSoulsLabel.getBodyBehavior().getSize().x + 15.0f, labelY));
         gameHud.addChild(difficultyLabel);
 
         helpLabel = new HudElementText(world.getGame());
@@ -70,7 +72,8 @@ public class LostSoulWorldHud {
             helpLabel.setText("F - Fullscreen");
         }
         helpLabel.setColor(textColor);
-        helpLabel.getBodyBehavior().setPosition(new Vector2(300.0f + difficultyLabel.getBodyBehavior().getSize().x + 15.0f, labelY));
+        helpLabel.getBodyBehavior().setPosition(new Vector2(
+                difficultyLabel.getBodyBehavior().getPosition().x + difficultyLabel.getBodyBehavior().getSize().x + 15.0f, labelY));
         gameHud.addChild(helpLabel);
 
         PrimitiveRectangleRenderBehavior gameHudRender = new PrimitiveRectangleRenderBehavior(gameHud);
