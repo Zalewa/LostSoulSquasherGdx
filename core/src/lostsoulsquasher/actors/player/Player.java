@@ -5,10 +5,13 @@ import lostsoulsquasher.Entity;
 import lostsoulsquasher.HealthBehavior;
 import lostsoulsquasher.LostSoulGame;
 import lostsoulsquasher.body.GameObjectBodyBehavior;
+import lostsoulsquasher.event.Event;
 import lostsoulsquasher.render.SpriteRenderBehavior;
 
 public class Player extends Entity {
     private int score = 0;
+
+    public Event scoreChanged = new Event();
 
     public Player(LostSoulGame game) {
         super(game);
@@ -31,9 +34,11 @@ public class Player extends Entity {
 
     public void setScore(int score) {
         this.score = score;
+        scoreChanged.fire(this);
     }
 
     public void addScore(int score) {
         this.score += score;
+        scoreChanged.fire(this);
     }
 }

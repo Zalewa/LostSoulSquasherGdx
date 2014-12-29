@@ -24,25 +24,24 @@ public class Entity {
     }
 
     public void update(float elapsedTime) {
-        Behavior[] behaviors = new Behavior[]{
-                bodyBehavior,
-                inputBehavior,
-                actionBehavior,
-                healthBehavior,
-                movementBehavior,
-                animationBehavior,
-                collisionBehavior
-        };
-        for (Behavior behavior : behaviors) {
-            if (behavior != null) {
-                behavior.run(elapsedTime, this);
-            }
-        }
+        runIfNotNull(bodyBehavior, elapsedTime);
+        runIfNotNull(inputBehavior, elapsedTime);
+        runIfNotNull(actionBehavior, elapsedTime);
+        runIfNotNull(healthBehavior, elapsedTime);
+        runIfNotNull(movementBehavior, elapsedTime);
+        runIfNotNull(animationBehavior, elapsedTime);
+        runIfNotNull(collisionBehavior, elapsedTime);
     }
 
     public void draw(float elapsedTime) {
         if (renderBehavior != null) {
             renderBehavior.run(elapsedTime, this);
+        }
+    }
+
+    private void runIfNotNull(Behavior behavior, float elapsedTime) {
+        if (behavior != null) {
+            behavior.run(elapsedTime, this);
         }
     }
 

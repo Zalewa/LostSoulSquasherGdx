@@ -11,6 +11,7 @@ public class SpriteRenderBehavior extends RenderBehavior {
     private Color color;
     private Texture texture;
     private Vector2 scale;
+    private Vector2 textureSize = new Vector2(0.0f, 0.0f);
 
     public SpriteRenderBehavior(LostSoulGame game, Texture texture) {
         this.game = game;
@@ -34,7 +35,9 @@ public class SpriteRenderBehavior extends RenderBehavior {
 
     @Override
     public Vector2 getSize() {
-        return new Vector2(texture.getWidth(), texture.getHeight());
+        textureSize.x = texture.getWidth();
+        textureSize.y = texture.getHeight();
+        return textureSize;
     }
 
     public Color getColor() {

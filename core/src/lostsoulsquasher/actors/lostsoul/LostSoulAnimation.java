@@ -35,7 +35,9 @@ public class LostSoulAnimation implements Behavior {
     private void setTexture(Entity entity, Texture texture)
     {
         SpriteRenderBehavior render = (SpriteRenderBehavior)entity.getRenderBehavior();
-        render.setTexture(texture);
-        render.centerOrigin();
+        if (render.getTexture() != texture) {
+            render.setTexture(texture);
+            render.centerOrigin();
+        }
     }
 }

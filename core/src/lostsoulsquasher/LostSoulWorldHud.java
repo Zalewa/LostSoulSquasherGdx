@@ -27,6 +27,10 @@ public class LostSoulWorldHud {
     private Color textColor = Color.RED.cpy();
     private Color gameOverTextColor = Color.WHITE.cpy();
 
+    private boolean prevCanGameOverResetByTouchStatus = false;
+    private int prevDifficultyPercentage = -1;
+    private boolean afterFirstUpdate = false;
+
     public LostSoulWorldHud(LostSoulWorld world) {
         this.world = world;
         world.getGame().getWorld().gameOverChanged.add(new EventHandler() {
@@ -40,6 +44,8 @@ public class LostSoulWorldHud {
 
         setupGameHud(world);
         setupGameOverHud(world);
+
+        registerEvents();
     }
 
     private void setupGameHud(LostSoulWorld world) {
@@ -163,25 +169,39 @@ public class LostSoulWorldHud {
     }
 
     public void update(float elapsedTime) {
-        scoreLabel.setText("Score: " + world.getPlayer().getScore());
-        lostSoulsLabel.setText("Lives: " + world.getPlayer().getHealthBehavior().getHealth());
-        difficultyLabel.setText(String.format("Difficulty: %1.0f%%",
-                (world.getDifficulty() / world.getMaxDifficulty()) * 100.0f));
+        if (!afterFirstUpdate) {
+            updateScoreLabel();
+            updateLivesLabel();
+            afterFirstUpdate = true;
+        }
+        updateDifficulty();
         updateGameOverBackground();
         updateGameOverHelp();
 
         root.update(elapsedTime);
     }
 
+    private void updateDifficulty() {
+        if (prevDifficultyPercentage != getCurrentDifficultyPercentage()) {
+            prevDifficultyPercentage = getCurrentDifficultyPercentage();
+            difficultyLabel.setText(String.format("Difficulty: %d%%", getCurrentDifficultyPercentage()));
+        }
+    }
+
+    private int getCurrentDifficultyPercentage() {
+        return (int)((world.getDifficulty() / world.getMaxDifficulty()) * 100.0f);
+    }
+
     private void updateGameOverHelp() {
         if (!world.isGameOver() || !world.getGame().getConfig().isTouchScreen()) {
             return;
         }
-        if (world.canExitGameOverByTouching()) {
+        if (world.canExitGameOverByTouching() && !prevCanGameOverResetByTouchStatus) {
             gameOverInstructions.setText("Touch to restart.");
-        } else {
+        } else if (!world.canExitGameOverByTouching() && prevCanGameOverResetByTouchStatus) {
             gameOverInstructions.setText("");
         }
+        prevCanGameOverResetByTouchStatus = world.canExitGameOverByTouching();
     }
 
     private void updateGameOverBackground() {
@@ -197,6 +217,37 @@ public class LostSoulWorldHud {
             gameOverBackgroundRender.color.g = 0.0f;
             gameOverBackgroundRender.color.b = 0.0f;
         }
+    }
+
+    private void registerEvents() {
+        world.getPlayer().scoreChanged.add(new EventHandler() {
+            @Override
+            public void run(Object sender, EventArgs args) {
+                updateScoreLabel();
+            }
+        });
+
+        world.getPlayer().getHealthBehavior().damagedEvent.add(new EventHandler() {
+            @Override
+            public void run(Object sender, EventArgs args) {
+                updateLivesLabel();
+            }
+        });
+
+        world.getPlayer().getHealthBehavior().deathEvent.add(new EventHandler() {
+            @Override
+            public void run(Object sender, EventArgs args) {
+                updateLivesLabel();
+            }
+        });
+    }
+
+    private void updateScoreLabel() {
+        scoreLabel.setText("Score: " + world.getPlayer().getScore());
+    }
+
+    private void updateLivesLabel() {
+        lostSoulsLabel.setText("Lives: " + world.getPlayer().getHealthBehavior().getHealth());
     }
 
     public void draw(float elapsedTime) {
