@@ -227,14 +227,7 @@ public class LostSoulWorldHud {
             }
         });
 
-        world.getPlayer().getHealthBehavior().damagedEvent.add(new EventHandler() {
-            @Override
-            public void run(Object sender, EventArgs args) {
-                updateLivesLabel();
-            }
-        });
-
-        world.getPlayer().getHealthBehavior().deathEvent.add(new EventHandler() {
+        world.getPlayer().getHealthBehavior().healthChangedEvent.add(new EventHandler() {
             @Override
             public void run(Object sender, EventArgs args) {
                 updateLivesLabel();

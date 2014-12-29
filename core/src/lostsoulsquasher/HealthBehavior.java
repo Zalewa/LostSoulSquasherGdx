@@ -9,6 +9,7 @@ public class HealthBehavior implements Behavior {
 
     public Event damagedEvent = new Event();
     public Event deathEvent = new Event();
+    public Event healthChangedEvent = new Event();
 
     public HealthBehavior(Entity entity) {
         this.entity = entity;
@@ -21,6 +22,9 @@ public class HealthBehavior implements Behavior {
     public void setHealth(int value) {
         int oldHealth = health;
         health = value;
+        if (oldHealth != health) {
+            healthChangedEvent.fire(this);
+        }
         if (!dead && health <= 0) {
             dead = true;
             deathEvent.fire(this);
