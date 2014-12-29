@@ -17,7 +17,7 @@ public class LostSoulWorldHud {
 
     private HudElement gameOverTextBackground;
     private HudElementText scoreLabel;
-    private HudElementText lostSoulsLabel;
+    private HudElementText livesLabel;
     private HudElementText difficultyLabel;
     private HudElementText helpLabel;
     private HudElementText gameOverInstructions;
@@ -60,17 +60,17 @@ public class LostSoulWorldHud {
         scoreLabel.getBodyBehavior().setPosition(new Vector2(0.0f, labelY));
         gameHud.addChild(scoreLabel);
 
-        lostSoulsLabel = new HudElementText(world.getGame());
-        lostSoulsLabel.setColor(textColor);
-        lostSoulsLabel.getBodyBehavior().setPosition(new Vector2(200.0f, labelY));
-        lostSoulsLabel.setText("Lives: 100");
-        gameHud.addChild(lostSoulsLabel);
+        livesLabel = new HudElementText(world.getGame());
+        livesLabel.setColor(textColor);
+        livesLabel.getBodyBehavior().setPosition(new Vector2(200.0f, labelY));
+        livesLabel.setText("Lives: 100");
+        gameHud.addChild(livesLabel);
 
         difficultyLabel = new HudElementText(world.getGame());
         difficultyLabel.setText("Difficulty: 100%");
         difficultyLabel.setColor(textColor);
         difficultyLabel.getBodyBehavior().setPosition(new Vector2(
-                lostSoulsLabel.getBodyBehavior().getPosition().x + lostSoulsLabel.getBodyBehavior().getSize().x + 15.0f, labelY));
+                livesLabel.getBodyBehavior().getPosition().x + livesLabel.getBodyBehavior().getSize().x + 15.0f, labelY));
         gameHud.addChild(difficultyLabel);
 
         helpLabel = new HudElementText(world.getGame());
@@ -240,7 +240,7 @@ public class LostSoulWorldHud {
     }
 
     private void updateLivesLabel() {
-        lostSoulsLabel.setText("Lives: " + world.getPlayer().getHealthBehavior().getHealth());
+        livesLabel.setText("Lives: " + world.getPlayer().getHealthBehavior().getHealth());
     }
 
     public void draw(float elapsedTime) {
