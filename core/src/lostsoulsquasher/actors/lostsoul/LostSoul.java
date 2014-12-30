@@ -38,10 +38,16 @@ public class LostSoul extends Entity {
                 movementBehavior.addSpeedModifier(actor);
             }
         }
-        game.getWorld().speedModifierActorAdded.add(new EventHandler() {
+        registerSpeedModifierEventHandler();
+    }
+
+    private void registerSpeedModifierEventHandler() {
+        final SpeedModifierActorAddedEventHandler speedHandler = new SpeedModifierActorAddedEventHandler();
+        getGame().getWorld().speedModifierActorAdded.add(speedHandler);
+        expiredChanged.add(new EventHandler() {
             @Override
             public void run(Object sender, EventArgs args) {
-                onSpeedModifierActorAdded((FactorModifierActorAddedEventArgs) args);
+                getGame().getWorld().speedModifierActorAdded.remove(speedHandler);
             }
         });
     }
@@ -75,8 +81,7 @@ public class LostSoul extends Entity {
         super.update(elapsedTime);
     }
 
-    void onSpeedModifierActorAdded(FactorModifierActorAddedEventArgs e) {
-        FactorModifierActorAddedEventArgs args = (FactorModifierActorAddedEventArgs) e;
+    private void onSpeedModifierActorAdded(FactorModifierActorAddedEventArgs args) {
         movementBehavior.addSpeedModifier(args.getActor());
     }
 
@@ -86,5 +91,12 @@ public class LostSoul extends Entity {
 
     public LostSoulClass getKlass() {
         return klass;
+    }
+
+    private class SpeedModifierActorAddedEventHandler implements EventHandler {
+        @Override
+        public void run(Object sender, EventArgs args) {
+            onSpeedModifierActorAdded((FactorModifierActorAddedEventArgs) args);
+        }
     }
 }
